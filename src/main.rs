@@ -58,6 +58,7 @@ async fn main() -> std::io::Result<()> {
         actix_web::App::new()
             .route("/", web::post().to(index))
     })
+    .workers(16)
     .bind("127.0.0.1:8200")?
     .run()
     .await
