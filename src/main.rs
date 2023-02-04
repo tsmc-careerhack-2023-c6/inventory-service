@@ -23,10 +23,7 @@ struct OrderDetail {
     timestamp: String,
     signature: String,
     material: i32,
-    a: i32,
-    b: i32,
-    c: i32,
-    d: i32,
+    data: Data,
 }
 
 fn calculate_signature(data: &Data) -> String {
@@ -38,7 +35,7 @@ fn calculate_material(data: &Data) -> i32 {
     data.a * 3 + data.b * 2 + data.c * 4 + data.d * 10
 }
 
-fn calculate_order_detail_and_flatten_data(order: &Order) -> OrderDetail {
+fn calculate_order_detail(order: &Order) -> OrderDetail {
     let signature = calculate_signature(&order.data);
     let material = calculate_material(&order.data);
     OrderDetail {
@@ -46,15 +43,12 @@ fn calculate_order_detail_and_flatten_data(order: &Order) -> OrderDetail {
         timestamp: order.timestamp.clone(),
         signature,
         material,
-        a: order.data.a,
-        b: order.data.b,
-        c: order.data.c,
-        d: order.data.d,
+        data: order.data.clone(),
     }
 }
 
 async fn index(order: web::Json<Order>) -> HttpResponse {
-    let order_detail = calculate_order_detail_and_flatten_data(&order);
+    let order_detail = calculate_order_detail(&order);
     HttpResponse::Ok().json(order_detail)
 }
 
