@@ -56,7 +56,7 @@ async fn index(order: web::Json<Order>) -> HttpResponse {
 async fn main() -> std::io::Result<()> {
     HttpServer::new(|| {
         actix_web::App::new()
-            .route("/", web::post().to(index))
+            .route("/api/inventory", web::post().to(index))
     })
     .workers(16)
     .bind("127.0.0.1:8200")?
